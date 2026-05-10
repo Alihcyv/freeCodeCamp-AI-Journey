@@ -71,7 +71,7 @@ In Transformer architectures, this block is often referred to as the **FFN (Feed
     - **Why GELU?** Unlike ReLU, which abruptly zeros out all negative values (creating "dead neurons"), GELU provides a smooth, stochastic transition. It allows a small amount of negative information to pass through, which helps the model learn more complex functions and generally leads to better convergence in Transformers.
 
 <p align="center">
-  <img src="images/mlp_model_from_scratch.jpg" width="400"/>
+  <img src="images/gelu_activation.png" width="500"/>
 </p>
 
 - **Regularization:** I implemented **Dropout** after both linear transformations to prevent the model from overfitting on the training data.

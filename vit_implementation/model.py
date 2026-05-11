@@ -40,19 +40,45 @@ class MLP(nn.Module):
         x = self.drop(x)
         return x
 
+class MultiHeadAttention(nn.Module):
+    def __init__(self, embed_dim, num_heads, drop_rate): 
+        super().__init__()
+        self.num_heads = num_heads
+        self.head_dim = embed_dim // num_heads
+        self.qkv = nn.Linear(embed_dim, embed_dim * 3, bias=False)
+        self.proj = nn.Linear(embed_dim, embed_dim)
+        
+        self.attn_drop = nn.Dropout(drop_rate)
+        self.proj_drop = nn.Dropout(drop_rate)
+
+    def forward(self, x):
+        B, T, C = x.shape
+        qkv = self.qkv(x).reshape(B, T, 3, self.num_heads, self.head_dim).permute(2, 0, 3, 1, 4)
+        q, k, v = qkv[0], qkv[1], qkv[2]
+
+        att = (q @ k.transpose(-2, -1)) * (self.head_dim ** -0.5)
+        att = F.softmax(att, dim=-1)
+        att = self.attn_drop(att)
+        
+        out = att @ v
+        out = out.transpose(1, 2).reshape(B, T, C)
+        out = self.proj(out)
+        out = self.proj_drop(out)
+        return out
+
 class TransformerEncoderLayer(nn.Module):
     def __init__(self, embed_dim, mlp_dim, num_heads, drop_rate) -> None:
         super().__init__()
         self.norm1 = nn.LayerNorm(embed_dim)
-        self.attention = nn.MultiheadAttention(embed_dim, num_heads, drop_rate, batch_first=True)
+        self.attention = MultiHeadAttention(embed_dim, num_heads, drop_rate)
         self.norm2 = nn.LayerNorm(embed_dim)
         self.mlp = MLP(embed_dim, mlp_dim, drop_rate)
 
     def forward(self, x):
-        attn_out, _ = self.attention(self.norm1(x), self.norm1(x), self.norm1(x))
-        x = x + attn_out
+        x = x + self.attention(self.norm1(x)) 
         x = x + self.mlp(self.norm2(x))
         return x
+
 
 class VisionTransformer(nn.Module):
     def __init__(self, patch_size, image_size, channels, num_classes, embed_dim, depth, num_heads, mlp_dim, drop_rate) -> None:

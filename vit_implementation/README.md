@@ -66,6 +66,23 @@ class PatchEmbedding(nn.Module):
 ### 2. MLP (Multi-Layer Perceptron / Feed-Forward Network)
 In Transformer architectures, this block is often referred to as the **FFN (Feed-Forward Network)**. While the Attention mechanism allows tokens to interact with each other, the MLP allows each token to process its own features independently.
 
+```python
+class MLP(nn.Module):
+    def __init__(self, in_features, hid_features, drop_rate) -> None:
+        super().__init__()
+        self.fc1 = nn.Linear(in_features, hid_features)
+        self.fc2 = nn.Linear(hid_features, in_features)
+        self.drop = nn.Dropout(drop_rate)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = F.gelu(x)
+        x = self.drop(x)
+        x = self.fc2(x)
+        x = self.drop(x)
+        return x
+```
+
 - **Purpose:** It acts as a local feature processor, mapping the attention-weighted representations into a higher-dimensional space to extract more complex patterns and then projecting them back.
 - **GELU Activation:** Instead of the standard ReLU, I used the **GELU (Gaussian Error Linear Unit)** activation function. 
     - **Why GELU?** Unlike ReLU, which abruptly zeros out all negative values (creating "dead neurons"), GELU provides a smooth, stochastic transition. It allows a small amount of negative information to pass through, which helps the model learn more complex functions and generally leads to better convergence in Transformers.
@@ -75,3 +92,5 @@ In Transformer architectures, this block is often referred to as the **FFN (Feed
 </p>
 
 - **Regularization:** I implemented **Dropout** after both linear transformations to prevent the model from overfitting on the training data.
+
+

@@ -16,7 +16,7 @@ I will update this list as I conquer new topics. Each item will eventually lead 
 
 - [x] **Vision Transformer (ViT) from Scratch** 
   - *Focus:* Patch embeddings, Multi-head attention, Positional encoding.
-  - [Link to implementation](./deep-dives/vision-transformers) *(You can link to the folder here later)*
+  - [Link to implementation](./vit_implementation/README.md)
 - [ ] **Next Topic...** (e.g., CNNs, LSTMs, GANs or Transformers for NLP)
 - [ ] **Next Topic...**
 
@@ -30,4 +30,4 @@ I will update this list as I conquer new topics. Each item will eventually lead 
 
 ---
 
-*“The best way to understand something is to build it from scratch.”*
+*"The best way to understand something is to build it from scratch."*

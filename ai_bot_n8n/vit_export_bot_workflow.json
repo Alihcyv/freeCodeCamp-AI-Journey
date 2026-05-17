@@ -4,16 +4,16 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $('Transcribe a recording').item?.json?.text || $('Telegram Trigger').item?.json?.message?.text }}",
+        "text": "={{ $json.user_query }}",
         "options": {
-          "systemMessage": "=\"You are an expert AI Engineer specializing in Computer Vision. Your task is to help the user analyze a specific Vision Transformer (ViT) implementation.\nHere is the project's source code and documentation:\n{{ $node[\"Code in JavaScript\"].json[\"full_project_code\"] }}\nGuidelines: Use the provided code as the primary source of truth. If the answer is not in the code, tell the user honestly.\"\n"
+          "systemMessage": "=You are a strict Technical Auditor for a specific Vision Transformer (ViT) implementation.\nCRITICAL RULE: Your knowledge is EXCLUSIVELY limited to the provided codebase below. You are FORBIDDEN from using your general training data to answer questions about topics unrelated to this project.\nRESPONSE LOGIC:\nIf the user's question is about the provided code, architecture, or the ViT implementation in this repository \n→\n→\n Answer precisely using the code.\nIf the user's question is about ANY other topic (e.g., pizza, general life, other AI models, or general programming not related to this code) \n→\n→\n You MUST answer exactly: 'I am sorry, but I am an expert only for this specific ViT implementation. This question is outside my scope of knowledge.'\nTIGHT CONSTRAINTS:\nDo not be helpful with general topics.\nDo not attempt to be a general-purpose assistant.\nIf the answer is not explicitly found in the provided code, say 'I don't know' or 'This is not implemented in the current codebase'.\nPROJECT CODEBASE:\n{{ $json.content }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        944,
-        -400
+        592,
+        -320
       ],
       "id": "a65e2208-31e5-400c-95fc-eb4bd41ccd1b",
       "name": "AI Agent"
@@ -32,8 +32,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        720,
-        -176
+        496,
+        -128
       ],
       "id": "82700bcb-c60d-4bc9-b5f7-4ccd0fea1908",
       "name": "OpenAI Chat Model",
@@ -54,8 +54,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.4,
       "position": [
-        880,
-        -176
+        640,
+        -128
       ],
       "id": "91f570df-bf8a-4d96-bf9b-a05afb86884a",
       "name": "Simple Memory"
@@ -70,7 +70,7 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.3,
       "position": [
-        -176,
+        -368,
         -272
       ],
       "id": "81b4e5ab-cc2e-4af9-bdda-a0bfbec862ee",
@@ -92,8 +92,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
       "position": [
-        480,
-        -256
+        208,
+        -224
       ],
       "id": "53ded8f9-a401-4e0f-9a97-e4987c6b4d4f",
       "name": "Transcribe a recording",
@@ -116,8 +116,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        224,
-        -80
+        112,
+        -64
       ],
       "id": "ae45db26-0ddf-4f76-afaf-a8654acf5219",
       "name": "Send a text message1",
@@ -131,120 +131,6 @@
     },
     {
       "parameters": {
-        "resource": "file",
-        "operation": "list",
-        "owner": {
-          "__rl": true,
-          "value": "Alihcyv",
-          "mode": "name"
-        },
-        "repository": {
-          "__rl": true,
-          "value": "freeCodeCamp-AI-Journey",
-          "mode": "name"
-        },
-        "filePath": "vit_implementation"
-      },
-      "type": "n8n-nodes-base.github",
-      "typeVersion": 1.1,
-      "position": [
-        416,
-        -400
-      ],
-      "id": "e9a58f74-5e66-433f-9d03-75719fcf4d2e",
-      "name": "List files",
-      "webhookId": "356a3749-1c47-4f8a-8739-ed0d2af13bd3",
-      "credentials": {
-        "githubApi": {
-          "id": "CdBns3Ag7Y9qs2dp",
-          "name": "GitHub account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "file",
-        "operation": "get",
-        "owner": {
-          "__rl": true,
-          "value": "Alihcyv",
-          "mode": "name"
-        },
-        "repository": {
-          "__rl": true,
-          "value": "freeCodeCamp-AI-Journey",
-          "mode": "list",
-          "cachedResultName": "freeCodeCamp-AI-Journey",
-          "cachedResultUrl": "https://github.com/Alihcyv/freeCodeCamp-AI-Journey"
-        },
-        "filePath": "={{ $json.path }}",
-        "asBinaryProperty": "",
-        "additionalParameters": {}
-      },
-      "type": "n8n-nodes-base.github",
-      "typeVersion": 1.1,
-      "position": [
-        688,
-        -400
-      ],
-      "id": "1c814b61-e763-4963-bd26-4d38dfe8c045",
-      "name": "Get a file1",
-      "webhookId": "93117901-065a-4dd3-aa71-048f515cdf2b",
-      "credentials": {
-        "githubApi": {
-          "id": "CdBns3Ag7Y9qs2dp",
-          "name": "GitHub account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "0cc24f41-9c05-407d-bcac-a68caa852715",
-              "leftValue": "={{ $json.path }}",
-              "rightValue": "=\\.(py|md)$",
-              "operator": {
-                "type": "string",
-                "operation": "regex"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.3,
-      "position": [
-        544,
-        -400
-      ],
-      "id": "30fb4551-b4d6-4d45-8141-73b212f68c1d",
-      "name": "Filter"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Initialize the context string with an English introduction\nlet fullContext = \"Below is the complete source code and documentation for the Vision Transformer (ViT) implementation:\\n\";\n\n// Loop through all files received from the previous GitHub node\nfor (const item of $input.all()) {\n  const path = item.json.path || \"unknown_file\";\n  const content = item.json.content || \"\";\n  \n  // Add clear English delimiters for each file\n  fullContext += `\\n\\n--- START OF FILE: ${path} ---\\n`;\n  fullContext += content;\n  fullContext += `\\n--- END OF FILE: ${path} ---\\n`;\n}\n\n// Return a single object containing the aggregated project code\nreturn { \n  full_project_code: fullContext \n};"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        816,
-        -400
-      ],
-      "id": "3fec1283-d645-49de-9e15-349edc789257",
-      "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
         "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
         "text": "={{ $json.output }}",
         "additionalFields": {
@@ -255,8 +141,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1200,
-        -400
+        848,
+        -320
       ],
       "id": "c8b4cd5f-0f51-4b2c-9b64-3ece45a98a88",
       "name": "Send a text message",
@@ -270,20 +156,6 @@
     },
     {
       "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "const item = { ...$json };\n\nif (item.message && item.message.text) {\n  item.msg_type = 'text';\n} else if (item.message && item.message.voice) {\n  item.msg_type = 'voice';\n} else {\n  item.msg_type = 'other';\n}\n\nreturn item;"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -32,
-        -272
-      ],
-      "id": "eda4500e-3c7c-47bd-a7fb-6ece464dbf6b",
-      "name": "Code in JavaScript1"
-    },
-    {
-      "parameters": {
         "resource": "file",
         "fileId": "={{ $json.message.voice.file_id }}",
         "additionalFields": {}
@@ -291,8 +163,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        256,
-        -256
+        80,
+        -224
       ],
       "id": "5e06fa4b-a9af-40f6-919f-755d0f9f8f35",
       "name": "Get a file",
@@ -368,11 +240,82 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        96,
+        -80,
         -288
       ],
       "id": "409c471a-dd50-4260-8569-30e815f7843b",
       "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "project_knowledge",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        144,
+        -416
+      ],
+      "id": "c81aa68a-2e4f-4fd5-bbd0-a52c8ff46d91",
+      "name": "Get a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VH911Q9TjV1W6wPE",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        336,
+        -320
+      ],
+      "id": "b8bbd325-1e12-440f-b9b4-d65a62ae7772",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const item = { ...$json };\n\nif (item.message && item.message.text) {\n  item.msg_type = 'text';\n} else if (item.message && item.message.voice) {\n  item.msg_type = 'voice';\n} else {\n  item.msg_type = 'other';\n}\n\nreturn item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        -208
+      ],
+      "id": "eda4500e-3c7c-47bd-a7fb-6ece464dbf6b",
+      "name": "Code_1"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Создаем единое поле 'user_query', чтобы AI Agent не путался\nif ($json.text) {\n  $json.user_query = $json.text;\n} else if ($json.message && $json.message.text) {\n  $json.user_query = $json.message.text;\n} else {\n  $json.user_query = \"No text provided\";\n}\n\nreturn $json;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        464,
+        -320
+      ],
+      "id": "07f486bd-cc4d-4216-98a1-69ddf189a004",
+      "name": "Code_2"
     }
   ],
   "pinData": {},
@@ -403,7 +346,12 @@
       "main": [
         [
           {
-            "node": "Code in JavaScript1",
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code_1",
             "type": "main",
             "index": 0
           }
@@ -425,64 +373,9 @@
       "main": [
         [
           {
-            "node": "List files",
+            "node": "Merge",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "List files": {
-      "main": [
-        [
-          {
-            "node": "Filter",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Filter": {
-      "main": [
-        [
-          {
-            "node": "Get a file1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get a file1": {
-      "main": [
-        [
-          {
-            "node": "Code in JavaScript",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript1": {
-      "main": [
-        [
-          {
-            "node": "Switch",
-            "type": "main",
-            "index": 0
+            "index": 1
           }
         ]
       ]
@@ -502,9 +395,9 @@
       "main": [
         [
           {
-            "node": "List files",
+            "node": "Merge",
             "type": "main",
-            "index": 0
+            "index": 1
           }
         ],
         [
@@ -522,6 +415,50 @@
           }
         ]
       ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code_2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -529,7 +466,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "6cf2741d-ff42-43af-966d-1c11ca5285bf",
+  "versionId": "06b60e72-fc2f-484a-ab76-9a01f620ab89",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cef3d9a155d60ace533c83730151bf2f200e18a295f69ae7de6d3cb7cda73438"

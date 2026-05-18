@@ -17,6 +17,8 @@ I will update this list as I conquer new topics. Each item will eventually lead 
 - [x] **Vision Transformer (ViT) from Scratch** 
   - *Focus:* Patch embeddings, Multi-head attention, Positional encoding.
   - [Link to implementation](./vit_implementation/README.md)
+- [x] **Multimodal AI Agent for Code Analysis**
+  - [Link to Bot Repo](./ai_bot_n8n/README.md)
 - [ ] **Next Topic...** (e.g., CNNs, LSTMs, GANs or Transformers for NLP)
 - [ ] **Next Topic...**
 
